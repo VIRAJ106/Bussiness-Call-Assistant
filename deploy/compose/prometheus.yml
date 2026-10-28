@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'dayclose-services'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets:
+          - 'host.docker.internal:8080' # api-gateway
+          - 'host.docker.internal:8081' # auth-service
+          - 'host.docker.internal:8082' # inventory-service
+          - 'host.docker.internal:8083' # commitment-service
+          - 'host.docker.internal:8084' # knowledge-service
+          - 'host.docker.internal:8085' # notification-service
+          - 'host.docker.internal:8086' # voice-agent-service

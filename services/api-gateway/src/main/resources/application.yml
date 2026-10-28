@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URI:http://localhost:8081}
+          predicates:
+            - Path=/v1/auth/**
+
+        - id: inventory-service
+          uri: ${INVENTORY_SERVICE_URI:http://localhost:8082}
+          predicates:
+            - Path=/v1/items/**,/v1/locations/**,/v1/stock/**,/v1/reservations/**,/v1/inventory/**
+
+        - id: commitment-service
+          uri: ${COMMITMENT_SERVICE_URI:http://localhost:8083}
+          predicates:
+            - Path=/v1/commitments/**,/v1/inbox/**
+
+        - id: knowledge-service
+          uri: ${KNOWLEDGE_SERVICE_URI:http://localhost:8084}
+          predicates:
+            - Path=/v1/catalogs/**,/v1/faqs/**,/v1/knowledge/**
+
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URI:http://localhost:8085}
+          predicates:
+            - Path=/v1/notifications/**
+
+        - id: voice-agent-service
+          uri: ${VOICE_AGENT_SERVICE_URI:http://localhost:8086}
+          predicates:
+            - Path=/v1/calls/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,gateway
+  endpoint:
+    health:
+      show-details: always

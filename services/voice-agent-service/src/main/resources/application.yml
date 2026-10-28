@@ -1,0 +1,35 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: voice-agent-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/dayclose_voice}
+    username: ${SPRING_DATASOURCE_USERNAME:dayclose}
+    password: ${SPRING_DATASOURCE_PASSWORD:dayclose_password}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+dayclose:
+  llm:
+    openai:
+      api-key: ${OPENAI_API_KEY:sk-test-key}
+      model: gpt-4-turbo-preview
+  agent:
+    max-tool-iterations: 10
+    guardrails:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always

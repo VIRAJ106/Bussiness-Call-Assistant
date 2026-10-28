@@ -1,0 +1,35 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: notification-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/dayclose_notification}
+    username: ${SPRING_DATASOURCE_USERNAME:dayclose}
+    password: ${SPRING_DATASOURCE_PASSWORD:dayclose_password}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+dayclose:
+  notification:
+    worker:
+      enabled: true
+    poll-interval-ms: 1000
+  sms:
+    provider: mock
+    enabled: false  # Set to true when Twilio/AWS SNS is configured
+    twilio:
+      account-sid: ${TWILIO_ACCOUNT_SID:}
+      auth-token: ${TWILIO_AUTH_TOKEN:}
+      from-number: ${TWILIO_FROM_NUMBER:}

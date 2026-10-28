@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/dayclose_auth}
+    username: ${SPRING_DATASOURCE_USERNAME:dayclose}
+    password: ${SPRING_DATASOURCE_PASSWORD:dayclose_password}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+dayclose:
+  jwt:
+    issuer: dayclose-auth-service
+    access-token-validity-seconds: 900 # 15 minutes (ADR-0002)
+    refresh-token-validity-seconds: 604800 # 7 days
